@@ -1,0 +1,200 @@
+<style>
+    html,body{       
+        position: fixed;
+        left: 0;
+        top: 0;
+        right:0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;  
+        overflow: hidden;   
+        background: #fff; 
+    }
+    #canvas{
+        border:10px solid #ccc;
+        touch-action: none;
+        z-index: 2;
+    }
+</style>
+<form action="" id="form">
+    <input type="hidden" name="user_id" value="{$user_info.id}">
+    <h2 class="title">
+        <svg class="octicon octicon-clippy" viewBox="0 0 14 16" version="1.1" width="28" aria-hidden="true">
+            <path fill-rule="evenodd" d="M2 13h4v1H2v-1zm5-6H2v1h5V7zm2 3V8l-3 3 3 3v-2h5v-2H9zM4.5 9H2v1h2.5V9zM2 12h2.5v-1H2v1zm9 1h1v2c-.02.28-.11.52-.3.7-.19.18-.42.28-.7.3H1c-.55 0-1-.45-1-1V4c0-.55.45-1 1-1h3c0-1.11.89-2 2-2 1.11 0 2 .89 2 2h3c.55 0 1 .45 1 1v5h-1V6H1v9h10v-2zM2 5h8c0-.55-.45-1-1-1H8c-.55 0-1-.45-1-1s-.45-1-1-1-1 .45-1 1-.45 1-1 1H3c-.55 0-1 .45-1 1z"></path>
+        </svg>
+        添加消费记录
+    </h2>
+    <div>
+        <div>会员名:{$user_info.name}</div>
+        <div>
+            <div>消费项目</div>
+            <div>
+                <input name="item">
+            </div>
+        </div>
+        <div>
+            <div>金额</div>
+            <div>
+                <input name="money" type="number">
+            </div>
+        </div>
+        <div>
+            签名区
+            
+        <input type="hidden" name="signature" id="signature" >
+        </div>
+        <div id="canvasDiv">
+        </div>
+        <div id="btn_clear">重签</div>
+        <div id="btn_submit">确定</div>
+        <script language="javascript">
+            document.body.addEventListener("touchmove", function (event) {
+                event.preventDefault();
+            });
+
+            var canvasDiv = document.getElementById('canvasDiv');
+            var canvas = document.createElement('canvas');
+            var canvasWidth = document.body.clientWidth - 20;
+            var canvasHeight = document.body.clientHeight / 2;
+            var point = {};
+
+            point.notFirst = false;
+            canvas.setAttribute('width', canvasWidth);
+            canvas.setAttribute('height', canvasHeight);
+            canvas.setAttribute('id', 'canvas');
+            canvasDiv.appendChild(canvas);
+            if (typeof G_vmlCanvasManager != 'undefined') {
+                canvas = G_vmlCanvasManager.initElement(canvas);
+
+            }
+            var context = canvas.getContext("2d");
+            var img = new Image();
+
+            img.src = "./a.jpg";
+            img.onload = function () {
+                var ptrn = context.createPattern(img, 'no-repeat');
+                context.fillStyle = ptrn;
+                context.fillRect(0, 0, canvas.width, canvas.height);
+            }
+            canvas.addEventListener("touchstart", function (e) {
+                // 最最关键的一行代码
+                e.preventDefault();
+                var mouseX = e.pageX - this.offsetLeft;
+                var mouseY = e.pageY - this.offsetTop;
+                paint = true;
+                addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+                redraw();
+            });
+            canvas.addEventListener("touchend", function (e) {
+                paint = false;
+
+            });
+            canvas.addEventListener("touchmove", function (e) {
+                if (paint) {
+                    addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+                    redraw();
+                }
+            });
+
+            canvas.addEventListener("mousedown", function (e) {
+                var mouseX = e.pageX - this.offsetLeft;
+                var mouseY = e.pageY - this.offsetTop;
+                paint = true;
+                addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+                redraw();
+
+            });
+            canvas.addEventListener("mousemove", function (e) {
+                if (paint) {
+                    addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+                    redraw();
+                }
+            });
+            canvas.addEventListener("mouseup", function (e) {
+                paint = false;
+            });
+            canvas.addEventListener("mouseleave", function (e) {
+                paint = false;
+            });
+            var clickX = new Array();
+            var clickY = new Array();
+            var clickDrag = new Array();
+            var paint;
+
+            function addClick(x, y, dragging) {
+                clickX.push(x);
+                clickY.push(y);
+                clickDrag.push(dragging);
+            }
+
+            function redraw() {
+                context.strokeStyle = "#d85d5d";
+                context.lineJoin = "round";
+                context.lineWidth = 4;
+                while (clickX.length > 0) {
+                    point.bx = point.x;
+                    point.by = point.y;
+
+                    point.x = clickX.pop();
+                    point.y = clickY.pop();
+                    point.drag = clickDrag.pop();
+                    context.beginPath();
+                    if (point.drag && point.notFirst) {
+                        context.moveTo(point.bx, point.by);
+                    } else {
+                        point.notFirst = true;
+                        context.moveTo(point.x - 1, point.y);
+                    }
+                    context.lineTo(point.x, point.y);
+                    context.closePath();
+                    context.stroke();
+                }
+            }
+
+            var clear = document.getElementById("btn_clear");
+            var submit = document.getElementById("btn_submit");
+            clear.addEventListener("click", function () {
+                canvas.width = canvas.width;
+            });
+            submit.addEventListener("click", function () {
+                var image_data = canvas.toDataURL('image/png', 0.8);
+                $.post('/index/uploadImg', {
+                        data: image_data
+                    },
+                    function (res) {
+                        if (res.code == 0) {
+                            console.log(res)
+                            $('#signature').val(res.data)
+                        } else {
+                            alert(res.message)
+                        }
+                    });
+
+            });
+        </script>
+        <div>
+            <button class="btn" id="submit">提交</button>
+            <a href="/consume/index?user_id={$user_info.id}" class="btn">取消</div>
+    </div>
+    </div>
+</form>
+<script>
+    $(function () {
+        $('body').on('touchmove touchstart', function (event) {
+            event.preventDefault();
+        });
+        $("#submit").click(function () {
+            console.log($("form").serialize())
+            $.post('/consume/add',
+                $("form").serialize(),
+                function (res) {
+                    if (res.code == 0) {
+                        window.location.href = '/consume/index?user_id={$user_info.id}'
+                    } else {
+                        alert(res.message)
+                    }
+                }, "json");
+        })
+
+    })
+</script>

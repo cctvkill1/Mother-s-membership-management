@@ -1,0 +1,47 @@
+<style>
+    body {
+        background: #d49d5f;
+    }
+
+    .menus {
+        position: absolute;
+        top: 170px;
+        background: #fff;
+        border-radius: 8px;
+        width: 90%;
+        left: 5%;
+    }
+
+    .menus a {
+        color: #333;
+        padding: 20px 0;
+        display: block;
+    }
+
+    .menu {
+        text-align: center;
+    }
+</style>
+<div class="top">
+    <div class="username">
+        <img class="avatar" src="{$Think.session.admin_info.avatar}"> {$Think.session.admin_info.username}
+        <a href="javascript:;" id="loginOut">
+            <svg style="color: #fff" class="octicon octicon-sign-out" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd" d="M11.992 8.994V6.996H7.995v-2h3.997V2.999l3.998 2.998-3.998 2.998zm-1.998 2.998H5.996V2.998L2 1h7.995v2.998h1V1c0-.55-.45-.999-1-.999H.999A1.001 1.001 0 0 0 0 1v11.372c0 .39.22.73.55.91L5.996 16v-3.008h3.998c.55 0 1-.45 1-1V7.995h-1v3.997z"></path>
+            </svg>退出</a>
+    </div>
+</div>
+
+
+<div class="menus">
+    <div class="menu">
+        <a href="/user/index">会员列表</a>
+    </div>
+    <div class="menu">
+        <a href="/user/add">添加会员</a>
+    </div>
+    <div class="menu">
+        <a href="/finance/index">财务情况</a>
+    </div>
+</div>

@@ -1,0 +1,153 @@
+<style>
+    .preview{
+    width: 200px;
+    height: 355px;
+    display: none;
+}
+</style>
+<form action="" id="form">
+    <input type="hidden" name="id" value="{$data.id}">
+    {if condition="$data.id"}
+    <h2 class="title">
+        <svg class="octicon octicon-pencil" viewBox="0 0 14 16" version="1.1" width="28" aria-hidden="true">
+            <path fill-rule="evenodd" d="M0 12v3h3l8-8-3-3-8 8zm3 2H1v-2h1v1h1v1zm10.3-9.3L12 6 9 3l1.3-1.3a.996.996 0 0 1 1.41 0l1.59 1.59c.39.39.39 1.02 0 1.41z"></path>
+        </svg>
+        会员资料修改
+    </h2>
+    {else /}
+    <h2 class="title">
+        <svg class="octicon octicon-diff-added" viewBox="0 0 14 16" version="1.1" width="28" aria-hidden="true">
+            <path fill-rule="evenodd" d="M13 1H1c-.55 0-1 .45-1 1v12c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V2c0-.55-.45-1-1-1zm0 13H1V2h12v12zM6 9H3V7h3V4h2v3h3v2H8v3H6V9z"></path>
+        </svg>
+        新会员办卡
+    </h2>
+    {/if}
+    <div>
+        <div>
+            <div>姓名</div>
+            <div>
+                <input name="name" value="{$data.name}">
+            </div>
+        </div>
+        <div>
+            <div>头像</div>
+            <div>
+                <input type="hidden" name="avatar" id="avatar" value="{$data.avatar|default=''}">
+                <input id="upload" type="file" accept="image/*;" capture="camera">
+                <img class="preview" src="{$data.avatar|default=''}" style="{$data.avatar?'display: block;':''}">
+            </div>
+        </div>
+        <div>
+            <div>生日</div>
+            <div>
+                <input type="date" name="birthday" value="{$data.birthday}">
+            </div>
+        </div>
+        <div>
+            <div>性别</div>
+            <div>
+                <select name="sex">
+                    <option value="女" {$data.sex=='女' ?"select='select'":""}>女</option>
+                    <option value="
+                        男" {$data.sex=='男' ?"select='select'":""}>男</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <div>手机号</div>
+            <div>
+                <input name="
+                        phone" type="number" value="{$data.phone}">
+            </div>
+        </div>
+        <div>
+            <div>余额</div>
+            <div>
+                <input name="balance" type="number" value="{$data.balance}">
+            </div>
+        </div>
+        <div>
+            <button class="btn" id="submit">提交</button>
+            {if condition="$data.id"}
+            <a href="/user/index" class="btn">取消</div>
+        {else /}
+        <a href="/index/index" class="btn">取消
+    </div>
+    {/if}
+    </div>
+    </div>
+</form>
+
+<script>
+    $(function () {
+        demo_h5_upload_ops.init();
+        $("#submit").click(function () {
+            console.log($("form").serialize())
+            $.post('/user/add',
+                $("form").serialize(),
+                function (res) {
+                    if (res.code == 0) {
+                        window.location.href = '/user/index'
+                    } else {
+                        alert(res.message)
+                    }
+                }, "json");
+        })
+
+    })
+    var demo_h5_upload_ops = {
+        init: function () {
+            this.eventBind();
+        },
+        eventBind: function () {
+            var that = this;
+            $("#upload").change(function () {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    that.compress(this.result);
+                };
+                reader.readAsDataURL(this.files[0]);
+            });
+        },
+        compress: function (res) {
+            var that = this;
+            var img = new Image(),
+                maxW = 800;
+
+            img.onload = function () {
+                var cvs = document.createElement('canvas'),
+                    ctx = cvs.getContext('2d');
+
+                if (img.width > maxW) {
+                    img.height *= maxW / img.width;
+                    img.width = maxW;
+                }
+                cvs.width = img.width;
+                cvs.height = img.height;
+
+                ctx.clearRect(0, 0, cvs.width, cvs.height);
+                ctx.drawImage(img, 0, 0, img.width, img.height);
+                var dataUrl = cvs.toDataURL('image/jpeg', 0.8);
+                $(".preview").attr("src", dataUrl);
+                $(".preview").show();
+                that.upload(dataUrl);
+            };
+
+            img.src = res;
+        },
+        upload: function (image_data) {
+            $.post('/index/uploadImg', {
+                    data: image_data
+                },
+                function (res) {
+                    if (res.code == 0) {
+                        console.log(res)
+                        $('#avatar').val(res.data)
+                    } else {
+                        alert(res.message)
+                    }
+                }, "json");
+
+        }
+    };
+</script>

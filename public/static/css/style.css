@@ -1,0 +1,195 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "微软雅黑", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+    font-size: 14px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.top {
+    background: url(/static/images/bg.jpg) no-repeat;
+    background-size: 100% auto;
+    height: 250px;
+}
+
+.top .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.username {
+    font-size: 24px;
+    padding: 50px;
+    color: #fff;
+}
+
+#loginOut {
+    color: #fff;
+    float: right;
+    margin-top: 17px;
+}
+
+.menus {
+    display: flex;
+    flex-direction: row;
+}
+
+.menu {
+    flex: 1;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+
+.table td {
+    font-size: 14px;
+    padding: .75rem;
+    vertical-align: top;
+    border: 1px solid #dee2e6;
+}
+
+.table th {
+    font-size: 14px;
+    padding: .75rem;
+    vertical-align: top;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.list-group-item.active {
+    z-index: 2;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.list-group-item {
+    box-shadow: 0 1px 9px #dcdcdc;
+    color: #495057;
+    width: 100%;
+    position: relative;
+    display: block;
+    padding: .75rem 1.25rem;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, .125);
+}
+
+.list-group-item:nth-child(event) {
+    background-color: #f2f2f2;
+}
+
+a {
+    text-decoration: none;
+}
+
+.list-group-item {
+    border-radius: .5rem;
+}
+
+.list-group-item:active {
+    color: #495057;
+    text-decoration: none;
+    background-color: #f8f9fa;
+}
+
+.a-arrow {
+    overflow: hidden;
+    position: relative;
+}
+
+.a-arrow:after {
+    content: " ";
+    display: inline-block;
+    height: 6px;
+    width: 6px;
+    border-width: 1px 1px 0 0;
+    border-color: #ccc;
+    border-style: solid;
+    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    position: absolute;
+    top: 50%;
+    margin-top: -3px;
+    right: 1rem;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.name {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.money {
+    margin-top: -16px;
+    font-size: 22px;
+    margin-right: 10px;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+}
+
+.title {
+    font-size: 30px;
+    color: #333;
+    margin: 10px 0 20px;
+}
+
+.octicon {
+    color: #333;
+    display: inline-block;
+    vertical-align: middle;
+    fill: currentColor;
+    width: 30px;
+    height: 30px;
+}
+
+.badges {
+    padding: 2px 5px;
+    line-height: 1;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 6px;
+}
+
+.sex-man {
+    background: #007bff;
+}
+
+.sex-woman {
+    background: #f272c2;
+}
+
+.age {
+    color: #212529;
+    background-color: #f7f7f7;
+}
