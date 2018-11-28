@@ -102,7 +102,7 @@ function post($url, $data, $type = 'json')
      return $r;
  }
 
- //获取远程ip地址
+ //获取客户ip地址
 function getRemoteIp()
 {
     if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -283,20 +283,6 @@ function download($url, $save_path = './images/test.jpg')
         fwrite($fp2, $img_ob);
         fclose($fp2);
     }
-}
-
-// 查询物流信息
-function getExpressDetail($expressCode = 'shentong', $number = '3372399903807')
-{
-    $key = '6b6a48d8d3f44626aa47899a0eeb6fac';
-    $baseUrl = 'http://www.aikuaidi.cn/rest/?key=%s&order=%s&id=%s&ord=desc&show=json';
-    $service_url = sprintf($baseUrl, $key, $number, $expressCode);
-    $statusArr = array('查询出错', '暂无记录', '在途中', '派送中', '已签收', '拒收', '疑难件', '退回');
-    $result = httpGet($service_url);
-    $result = json_decode($result);
-    $result->status_str = $statusArr[$result->status];
-
-    return $result;
 }
 
 // 生成随机字符串
