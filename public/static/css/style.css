@@ -30,28 +30,43 @@ body {
     margin-right: 10px;
     vertical-align: middle;
 }
-
-.username {
-    font-size: 24px;
-    padding: 50px;
-    color: #fff;
-}
-
-#loginOut {
-    color: #fff;
-    float: right;
-    margin-top: 17px;
-}
-
-.menus {
+.d-flex{
     display: flex;
-    flex-direction: row;
 }
 
-.menu {
-    flex: 1;
+.btn {
+    box-sizing: border-box; 
+    padding: 10px 13px;
+    margin-top: 20px;
+    color: #fff;
+    background-color: #007bff;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid transparent;
+    font-size: 14;
+    line-height: 1;
+    border-radius: 5px;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+input {
+    display: block;
+    width: 100%;
+    padding: 10px 13px;
+    font-size: 14;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+.btn-cancel{
+    color: #fff;
+    background-color: #545b62;
+    border-color: #4e555b;
+}
 table {
     border-collapse: collapse;
 }
@@ -135,6 +150,22 @@ a {
     margin-top: -3px;
     right: 1rem;
 }
+#form{
+    padding: 20px;
+}
+.btn{
+    flex:1;
+    margin-right: 10px;
+}
+.btn:last-child{
+    margin-right: 0;
+}
+.form-row{
+    margin-bottom: 20px;
+}
+.icon{
+    vertical-align: middle; 
+}
 
 .float-left {
     float: left;
@@ -159,7 +190,7 @@ a {
 }
 
 .title {
-    font-size: 30px;
+    font-size: 20px;
     color: #333;
     margin: 10px 0 20px;
 }

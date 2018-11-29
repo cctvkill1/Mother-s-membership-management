@@ -1,15 +1,23 @@
 <style>
     body {
-        background: #d49d5f;
+        background: #fff;
+    }
+    .username{
+        padding: 50px 30px;
+        font-size: 24px; 
+        color: #fff;
     }
 
     .menus {
+        display: flex;
+        flex-direction: row;
         position: absolute;
         top: 170px;
         background: #fff;
         border-radius: 8px;
         width: 90%;
         left: 5%;
+        box-shadow: 0px 1px 1px #ccc;
     }
 
     .menus a {
@@ -21,22 +29,34 @@
     .menu {
         text-align: center;
         position: relative;
+        flex: 1;
     }
 
     .menu::after {
         content: ' ';
         width: .5px;
-        height: 20px;
+        height: 60px;
         position: absolute;
         top: 50%;
         right: 0;
-        margin-top: -10px;
-        background: #666;
+        margin-top: -30px;
+        background: #999;
         transform: scaleX(0.5);
     }
 
     .menu:last-child:after {
         content: none;
+    }
+     
+
+    #loginOut {
+        color: #fff;
+        float: right;
+        margin-top: 17px;
+    }  
+    .icon{    
+        display: block;
+        margin: 0 auto;
     }
 </style>
 <div class="top">
@@ -53,15 +73,15 @@
 <!-- todo  加个散客消费 -->
 <div class="menus">
     <div class="menu">
-        <a href="/consume/add">散客消费</a>
+        <a href="/consume/add"><img src="/static/images/chaopiao.png" class="icon">散客消费</a>
     </div>
     <div class="menu">
-        <a href="/user/index">会员列表</a>
+        <a href="/user/index"><img src="/static/images/liebiao.png" class="icon">会员列表</a>
     </div>
     <div class="menu">
-        <a href="/user/add">添加会员</a>
+        <a href="/user/add"><img src="/static/images/qia.png" class="icon">添加会员</a>
     </div>
     <div class="menu">
-        <a href="/finance/index">财务情况</a>
+        <a href="/finance/index"><img src="/static/images/shujubaobiao.png" class="icon">财务情况</a>
     </div>
 </div>
