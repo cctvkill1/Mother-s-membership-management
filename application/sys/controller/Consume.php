@@ -32,6 +32,7 @@ class Consume extends Admin
     public function add()
     {
         if (request()->isPost()) {
+            $admin_info = session('admin_info');
             $data = input('param.', '');
             $data['item'] = strval($data['item']);
             $data['money'] = intval($data['money']);
@@ -45,10 +46,11 @@ class Consume extends Admin
                 $user_info = Db::name('user')->find($data['user_id']);
                 $user_info['balance'] -= $data['money'];
                 $data['balance'] = $user_info['balance'] = intval($user_info['balance']);
-                $data['ct'] = time();
                 Db::name('user')->where('id', $data['user_id'])->update(['balance' => $user_info['balance'], 'last_time' => time()]);
-                Db::name('consumption_records')->insert($data);
             }
+            $data['admin_id'] = $admin_info['id'];
+            $data['ct'] = time();
+            Db::name('consumption_records')->insert($data);
 
             return success();
         }

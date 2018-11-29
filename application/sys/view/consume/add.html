@@ -22,6 +22,7 @@
         <svg class="octicon octicon-clippy" viewBox="0 0 14 16" version="1.1" width="28" aria-hidden="true">
             <path fill-rule="evenodd" d="M2 13h4v1H2v-1zm5-6H2v1h5V7zm2 3V8l-3 3 3 3v-2h5v-2H9zM4.5 9H2v1h2.5V9zM2 12h2.5v-1H2v1zm9 1h1v2c-.02.28-.11.52-.3.7-.19.18-.42.28-.7.3H1c-.55 0-1-.45-1-1V4c0-.55.45-1 1-1h3c0-1.11.89-2 2-2 1.11 0 2 .89 2 2h3c.55 0 1 .45 1 1v5h-1V6H1v9h10v-2zM2 5h8c0-.55-.45-1-1-1H8c-.55 0-1-.45-1-1s-.45-1-1-1-1 .45-1 1-.45 1-1 1H3c-.55 0-1 .45-1 1z"></path>
         </svg>
+        {$user_info.id?"散客":"会员"}
         添加消费记录
     </h2>
     <div>
@@ -38,15 +39,16 @@
                 <input name="money" type="number">
             </div>
         </div>
+        {if condition="$user_info.id"}
         <div>
             签名区
-            
-        <input type="hidden" name="signature" id="signature" >
+
+            <input type="hidden" name="signature" id="signature">
         </div>
         <div id="canvasDiv">
         </div>
         <div id="btn_clear">重签</div>
-        <div id="btn_submit">确定</div>
+        <!-- <div id="btn_submit">确定</div> -->
         <script language="javascript">
             document.body.addEventListener("touchmove", function (event) {
                 event.preventDefault();
@@ -152,28 +154,28 @@
             }
 
             var clear = document.getElementById("btn_clear");
-            var submit = document.getElementById("btn_submit");
             clear.addEventListener("click", function () {
                 canvas.width = canvas.width;
             });
-            submit.addEventListener("click", function () {
-                var image_data = canvas.toDataURL('image/png', 0.8);
-                $.post('/index/uploadImg', {
-                        data: image_data
-                    },
-                    function (res) {
-                        if (res.code == 0) {
-                            console.log(res)
-                            $('#signature').val(res.data)
-                        } else {
-                            alert(res.message)
-                        }
-                    });
-
-            });
+            // var submit = document.getElementById("btn_submit");
+            // submit.addEventListener("click", function () {
+            //     var image_data = canvas.toDataURL('image/png', 0.8);
+            //     $.post('/index/uploadImg', {
+            //             data: image_data
+            //         },
+            //         function (res) {
+            //             if (res.code == 0) {
+            //                 console.log(res)
+            //                 $('#signature').val(res.data)
+            //             } else {
+            //                 alert(res.message)
+            //             }
+            //         });
+            // });
         </script>
+        {/if}
         <div>
-            <button class="btn" id="submit">提交</button>
+            <button class="btn" type="button" id="submit">提交</button>
             <a href="/consume/index?user_id={$user_info.id}" class="btn">取消</div>
     </div>
     </div>
@@ -183,17 +185,42 @@
         $('body').on('touchmove touchstart', function (event) {
             event.preventDefault();
         });
-        $("#submit").click(function () {
+
+        function submitFun(gohome = false) {
             console.log($("form").serialize())
             $.post('/consume/add',
                 $("form").serialize(),
                 function (res) {
                     if (res.code == 0) {
-                        window.location.href = '/consume/index?user_id={$user_info.id}'
+                        if (!gohome)
+                            window.location.href =
+                            '/consume/index?user_id={$user_info.id}'
+                        else
+                            window.location.href =
+                            '/index'
                     } else {
                         alert(res.message)
                     }
                 }, "json");
+
+        }
+        $("#submit").click(function () {
+            if (typeof canvas !== 'undefined') {
+                var image_data = canvas.toDataURL('image/png', 0.8);
+                $.post('/index/uploadImg', {
+                        data: image_data
+                    },
+                    function (res) {
+                        if (res.code == 0) {
+                            console.log(res)
+                            $('#signature').val(res.data)
+                            submitFun()
+                        } else {
+                            alert(res.message)
+                        }
+                    });
+            } else
+                submitFun(true)
         })
 
     })
