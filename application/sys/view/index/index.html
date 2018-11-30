@@ -1,3 +1,4 @@
+<script src="__STATIC__/js/echarts.simple.min.js" charset="utf-8"></script>
 <style>
     body {
         background: #fff;
@@ -17,7 +18,7 @@
         border-radius: 8px;
         width: 90%;
         left: 5%;
-        box-shadow: 0px 1px 1px #ccc;
+        box-shadow: 0px 1px 3px #ccc;
     }
 
     .menus a {
@@ -34,14 +35,14 @@
 
     .menu::after {
         content: ' ';
-        width: .5px;
+        width: 1px;
         height: 60px;
         position: absolute;
         top: 50%;
-        right: 0;
+        right: 0px;
         margin-top: -30px;
         background: #999;
-        transform: scaleX(0.5);
+        transform: scaleX(0.3);
     }
 
     .menu:last-child:after {
@@ -63,14 +64,14 @@
     <div class="username">
         <img class="avatar" src="{$Think.session.admin_info.avatar}"> {$Think.session.admin_info.username}
         <a href="javascript:;" id="loginOut">
-            <svg style="color: #fff" class="octicon octicon-sign-out" viewBox="0 0 16 16" version="1.1" width="32"
+            <svg style="fill: #fff;vertical-align: middle"  viewBox="0 0 16 16" version="1.1" width="32"
                 aria-hidden="true">
                 <path fill-rule="evenodd" d="M11.992 8.994V6.996H7.995v-2h3.997V2.999l3.998 2.998-3.998 2.998zm-1.998 2.998H5.996V2.998L2 1h7.995v2.998h1V1c0-.55-.45-.999-1-.999H.999A1.001 1.001 0 0 0 0 1v11.372c0 .39.22.73.55.91L5.996 16v-3.008h3.998c.55 0 1-.45 1-1V7.995h-1v3.997z"></path>
             </svg>退出</a>
     </div>
 </div>
 
-<!-- todo  加个散客消费 -->
+<!-- todo  图表展示 -->
 <div class="menus">
     <div class="menu">
         <a href="/consume/add"><img src="/static/images/chaopiao.png" class="icon">散客消费</a>

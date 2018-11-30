@@ -24,9 +24,10 @@ class Consume extends Admin
                 }
                 $data[$key]['ct'] = $ct;
             }
+            $user_info = Db::name('user')->find($user_id);
         }
 
-        return view('index', ['data' => $data]);
+        return view('index', ['data' => $data,'user_info' => $user_info]);
     }
 
     public function add()

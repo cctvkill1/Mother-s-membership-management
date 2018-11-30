@@ -1,7 +1,7 @@
 <style>
 .preview{
-    width: 200px;
-    height: 355px;
+    width: 300px;
+    height: auto;
     display: none;
 }
 </style>
@@ -29,7 +29,7 @@
             <div>头像</div>
             <div>
                 <input type="hidden" name="avatar" id="avatar" value="{$data.avatar|default=''}">
-                <input id="upload" type="file" accept="image/*;" capture="camera">
+                <input id="upload" type="file">
                 <img class="preview" src="{$data.avatar|default=''}" style="{$data.avatar?'display: block;':''}">
             </div>
         </div>
@@ -65,7 +65,7 @@
         <div class="d-flex">
             <a class="btn" id="submit">提交</a>
             {if condition="$data.id"}
-            <a href="/user/index" class="btn btn-cancel">返回</a>
+            <a href="/consume/index?user_id={$data.id}" class="btn btn-cancel">返回</a>
             {else /}
             <a href="/index/index" class="btn btn-cancel">返回</a>
             {/if}
@@ -82,7 +82,7 @@
                 $("form").serialize(),
                 function (res) {
                     if (res.code == 0) {
-                        window.location.href = '/user/index'
+                        window.location.href = '/consume/index?user_id={$data.id}'
                     } else {
                         alert(res.message)
                     }
@@ -107,7 +107,7 @@
         compress: function (res) {
             var that = this;
             var img = new Image(),
-                maxW = 800;
+                maxW = 400;
 
             img.onload = function () {
                 var cvs = document.createElement('canvas'),

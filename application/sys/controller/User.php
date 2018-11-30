@@ -10,7 +10,12 @@ class User extends Admin
     public function index()
     {
         $admin_info = session('admin_info');
-        $data = Db::name('user')->order(['last_time'=>-1])->select();
+        $key = input('param.keyword', '');
+        $query = [];
+        if ($key) {
+            $query['name'] = ['like',$key];
+        }
+        $data = Db::name('user')->where($query)->order(['last_time'=>-1])->select();
         foreach ($data as $key => $value) {
             $age  = calcAge($value['birthday']);
             $data[$key]['age'] = $age?$age.'岁':0;

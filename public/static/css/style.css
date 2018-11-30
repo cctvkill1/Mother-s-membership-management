@@ -43,7 +43,7 @@ body {
     display: inline-block;
     text-align: center;
     border: 1px solid transparent;
-    font-size: 14;
+    font-size: 14px;
     line-height: 1;
     border-radius: 5px;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
@@ -53,7 +53,7 @@ input {
     display: block;
     width: 100%;
     padding: 10px 13px;
-    font-size: 14;
+    font-size: 14px;
     line-height: 1.5;
     color: #495057;
     background-color: #fff;
@@ -66,32 +66,6 @@ input {
     color: #fff;
     background-color: #545b62;
     border-color: #4e555b;
-}
-table {
-    border-collapse: collapse;
-}
-
-.table {
-    width: 100%;
-    max-width: 100%;
-    margin-bottom: 1rem;
-    background-color: transparent;
-}
-
-.table td {
-    font-size: 14px;
-    padding: .75rem;
-    vertical-align: top;
-    border: 1px solid #dee2e6;
-}
-
-.table th {
-    font-size: 14px;
-    padding: .75rem;
-    vertical-align: top;
-    text-align: center;
-    border: 1px solid #dee2e6;
-    border-bottom: 2px solid #dee2e6;
 }
 
 .list-group-item.active {
@@ -107,9 +81,10 @@ table {
     width: 100%;
     position: relative;
     display: block;
-    padding: .75rem 1.25rem;
-    margin-bottom: 20px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
     background-color: #fff;
+    border-radius: 5px;
     border: 1px solid rgba(0, 0, 0, .125);
 }
 
@@ -120,10 +95,7 @@ table {
 a {
     text-decoration: none;
 }
-
-.list-group-item {
-    border-radius: .5rem;
-}
+ 
 
 .list-group-item:active {
     color: #495057;
@@ -161,7 +133,7 @@ a {
     margin-right: 0;
 }
 .form-row{
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 .icon{
     vertical-align: middle; 
@@ -194,15 +166,7 @@ a {
     color: #333;
     margin: 10px 0 20px;
 }
-
-.octicon {
-    color: #333;
-    display: inline-block;
-    vertical-align: middle;
-    fill: currentColor;
-    width: 30px;
-    height: 30px;
-}
+ 
 
 .badges {
     padding: 2px 5px;
@@ -223,4 +187,7 @@ a {
 .age {
     color: #212529;
     background-color: #f7f7f7;
+}
+.db{
+    display: block;
 }
