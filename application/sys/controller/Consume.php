@@ -19,15 +19,17 @@ class Consume extends Admin
             $dy = date('y');
             foreach ($data as $key => $value) {
                 $ct = date('Y-m-d H:i', $value['ct']);
-                if (strpos($ct, $dy)!==false) {
+                if (false !== strpos($ct, $dy)) {
                     $ct = date('m-d H:i', $value['ct']);
                 }
                 $data[$key]['ct'] = $ct;
             }
             $user_info = Db::name('user')->find($user_id);
+            $age = calcAge($user_info['birthday']);
+            $user_info['age'] = $age.'岁';
         }
 
-        return view('index', ['data' => $data,'user_info' => $user_info]);
+        return view('index', ['data' => $data, 'user_info' => $user_info]);
     }
 
     public function add()
@@ -48,10 +50,21 @@ class Consume extends Admin
                 $user_info['balance'] -= $data['money'];
                 $data['balance'] = $user_info['balance'] = intval($user_info['balance']);
                 Db::name('user')->where('id', $data['user_id'])->update(['balance' => $user_info['balance'], 'last_time' => time()]);
+            } else {
+                // 散客的消费直接计入收入
+                Db::name('income')->insert(['money' => $data['money'], 'ct' => time(),  'type' => '散客消费']);
             }
             $data['admin_id'] = $admin_info['id'];
             $data['ct'] = time();
             Db::name('consumption_records')->insert($data);
+            // 消费统计累加
+            $date = date('Y-m-d');
+            $find = Db::name('total')->where('date', $date)->find();
+            if ($find) {
+                Db::name('total')->where('date', $date)->update(['money' => $data['money'] + $find['money']]);
+            } else {
+                Db::name('total')->insert(['date' => $date, 'ct' => time(), 'money' => $data['money']]);
+            }
 
             return success();
         }

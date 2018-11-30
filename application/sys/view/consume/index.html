@@ -14,7 +14,7 @@
 
     .user-info {
         text-align: center;
-        padding: 50px;
+        padding: 40px;
         position: relative;
         height: 300px;
         overflow: hidden;
@@ -24,7 +24,7 @@
     .user-info::before {
         position: absolute;
         z-index: -2;
-        filter: blur(5px);
+        filter: blur(8px);
         top: 0;
         bottom: 0;
         left: 0;
@@ -47,10 +47,10 @@
         opacity: .3;
     }
 
-    .user-info .btn {
+    .user-info .btn { 
         background-color: transparent;
-        border-color: #fff;
-        color: #fff;
+        border-color: #e87272;
+        color: #e87272;
     }
 
     .btn.green {
@@ -80,7 +80,10 @@
     .sex {
         position: absolute;
         display: inline;
-        line-height: 1.2;
+        line-height: 1.2;    
+        top: 156px;
+        right: 50%;
+        margin-right: -66px;
     }
 
     .birthday {
@@ -162,13 +165,18 @@
 <div class="user-info">
     <a href="/user/add?id={$user_info.id}" class="db ua">
         <img src="{$user_info.avatar}" class="avatar db">
-        {$user_info.name}
+        <div>{$user_info.name}</div>
         <span class="badges sex {$user_info.sex=='女'?'sex-woman':'sex-man'}">{$user_info.sex}</span>
-        <div class="badges birthday">{$user_info.birthday}</div>
+        <div style="font-size: 16px;">余额 ￥{$user_info.balance}</div>
+        {if condition="$user_info.birthday"}
+            <div class="badges birthday">{$user_info.birthday}
+                <span class="badges age">{$user_info.age|default=''}</span>
+            </div>
+        {/if}
     </a>
 
     <a href="/consume/add?user_id={$Request.get.user_id}" class="btn green">添加消费</a>
-    <a href="/user/index" class="btn">返回</a>
+    <a href="javascript:;" id="del" class="btn">删除会员</a>
 
 
 </div>
@@ -177,7 +185,7 @@
 <div class="card-list">
     {volist name="data" id="vo"}
     <a href="{$vo.signature}" class="card">
-        <div class="card-head {$vo.money>10?($vo.money>50?($vo.money>100?'red':'purple'):'blue'):'green'}">
+        <div class="card-head {$vo.money>50?($vo.money>100?($vo.money>200?'red':'purple'):'blue'):'green'}">
             <img src="{$vo.signature}" class="signature-img" alt="">
             <div class="card-money">
                 <div class="cm">￥{$vo.money}</div>
@@ -196,9 +204,18 @@
 <script>
     $(function () {
 
-        $(".edit").click(function (event) {
-            window.location = '/user/add?id=' + $(this).data('id')
-            event.preventDefault()
-        })
+        $("#del").click(function () { 
+            if(confirm("确定要删除吗？"))
+            {
+                $.post('/user/del', {id: '{$user_info.id}'},
+                    function (res) {
+                        if (res.code == 0) { 
+                            window.location.href='/user/index'
+                        } else {
+                            alert(res.message)
+                        }
+                    });
+            }                
+        })             
     })
 </script>

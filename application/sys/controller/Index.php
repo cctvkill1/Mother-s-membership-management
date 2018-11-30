@@ -10,10 +10,21 @@ class Index extends Admin
     public function index()
     {
         $admin_info = session('admin_info');
-        // print_r(session_save_path());
-        // 记录一次session 不能写的异常 发现是没权限 chown apache:apache /var/lib/php/session
 
-        return view('index');
+        $date = [];
+        $query = [];
+        for ($i = 1; $i <= 7; $i++) {
+            $date[$i-1] = date('m-d', strtotime('+'.$i - 7 .' days'));
+            $query[$i-1] = date('Y-m-d', strtotime('+'.$i - 7 .' days'));
+        }
+        $data['dates'] = json_encode($date);
+        $values = [];
+        foreach ($query as $key => $value) {
+           $d = Db::name('total')->where('date',$value)->find();
+           $values[] = intval($d['money']);
+        }
+        $data['values'] = json_encode($values);
+        return view('index', ['data' => $data]);
     }
 
     public function noaccess()
@@ -53,6 +64,7 @@ class Index extends Admin
     public function loginOut()
     {
         session('admin_info', null);
+
         return success();
     }
 
@@ -61,13 +73,14 @@ class Index extends Admin
     {
         $data = input('post.data', '');
         if ($data) {
-            $res =  base64_upload($data);
+            $res = base64_upload($data);
             if ($res) {
                 return success($res);
             } else {
                 return error('上传失败');
             }
         }
+
         return error('请选择图片');
     }
-}
+} 

@@ -160,7 +160,7 @@
         </script>
         {/if}
         <div class="d-flex">
-            <a class="btn" id="submit" href="javascript:;">提交</a>
+            <button type="button" class="btn" id="submit">提交</button>
             {if condition="$user_info.id"}
             <a href="/consume/index?user_id={$user_info.id}" class="btn btn-cancel">返回</a>
             {else/}
@@ -175,11 +175,12 @@
             event.preventDefault();
         });
 
-        function submitFun(gohome = false) {
-            console.log($("form").serialize())
+        function submitFun(gohome = false) { 
             $.post('/consume/add',
                 $("form").serialize(),
                 function (res) {
+                    $("#submit").attr('disabled',false)
+                    $('.loading-div').hide()
                     if (res.code == 0) {
                         if (!gohome)
                             window.location.href = '/consume/index?user_id={$user_info.id}'
@@ -192,6 +193,8 @@
 
         }
         $("#submit").click(function () {
+            $(this).attr('disabled','disabled')
+            $('.loading-div').show()
             if (typeof canvas !== 'undefined') {
                 var image_data = canvas.toDataURL('image/png', 0.8);
                 $.post('/index/uploadImg', {

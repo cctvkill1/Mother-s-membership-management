@@ -30,7 +30,7 @@
             <div>
                 <input type="hidden" name="avatar" id="avatar" value="{$data.avatar|default=''}">
                 <input id="upload" type="file">
-                <img class="preview" src="{$data.avatar|default=''}" style="{$data.avatar?'display: block;':''}">
+                <img class="preview" src="{$data.avatar|default=''}" {$data.avatar?'style="display: block;""':''}>
             </div>
         </div>
         <div class="form-row">
@@ -44,26 +44,38 @@
             <div>
                 <select name="sex">
                     <option value="女" {$data.sex=='女' ?"select='select'":""}>女</option>
-                    <option value="
-                        男" {$data.sex=='男' ?"select='select'":""}>男</option>
+                    <option value="男" {$data.sex=='男' ?"select='select'":""}>男</option>
                 </select>
             </div>
         </div>
         <div class="form-row">
             <div>手机号</div>
             <div>
-                <input name="
-                        phone" type="number" value="{$data.phone}">
+                <input name="phone" type="number" value="{$data.phone}">
             </div>
         </div>
         <div class="form-row">
-            <div>余额</div>
+            <div>{$data.id?"余额":"办卡"}</div>
             <div>
-                <input name="balance" type="number" value="{$data.balance}">
+                {if condition="$data.id"}
+                    ￥{$data.balance}
+                {else /}
+                    <input name="balance" type="number" value="{$data.balance}">
+                {/if}
             </div>
         </div>
+        
+        {if condition="$data.id"}
+        <div class="form-row">
+            <div>充值</div>
+            <div>
+                <input name="recharge" type="number" value="">
+            </div>
+        </div> 
+         
+        {/if}
         <div class="d-flex">
-            <a class="btn" id="submit">提交</a>
+            <button type="button" class="btn" id="submit" >提交</button>
             {if condition="$data.id"}
             <a href="/consume/index?user_id={$data.id}" class="btn btn-cancel">返回</a>
             {else /}
@@ -76,13 +88,20 @@
 <script>
     $(function () {
         demo_h5_upload_ops.init();
-        $("#submit").click(function () {
-            console.log($("form").serialize())
+        $("#submit").click(function () { 
+            $(this).attr('disabled','disabled') 
+            $('.loading-div').show()
             $.post('/user/add',
                 $("form").serialize(),
                 function (res) {
+                    $("#submit").attr('disabled',false)
+                    $('.loading-div').hide()
                     if (res.code == 0) {
-                        window.location.href = '/consume/index?user_id={$data.id}'
+                        {if condition="$data.id"}
+                                    window.location.href = '/consume/index?user_id={$data.id}'
+                        {else /}
+                                    window.location.href = '/index/index'
+                        {/if}
                     } else {
                         alert(res.message)
                     }
