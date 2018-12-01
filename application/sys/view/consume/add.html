@@ -50,9 +50,6 @@
         <a href="javascript:;" id="btn_clear" class="btn btn-warning">重签</a>
         <!-- <div id="btn_submit">确定</div> -->
         <script language="javascript">
-            document.body.addEventListener("touchmove", function (event) {
-                event.preventDefault();
-            });
 
             var canvasDiv = document.getElementById('canvasDiv');
             var canvas = document.createElement('canvas');
@@ -170,11 +167,7 @@
     </div>
 </form>
 <script>
-    $(function () {
-        $('body').on('touchmove touchstart', function (event) {
-            event.preventDefault();
-        });
-
+    $(function () { 
         function submitFun(gohome = false) { 
             $.post('/consume/add',
                 $("form").serialize(),
